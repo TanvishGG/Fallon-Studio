@@ -1,22 +1,14 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import sql from "@/db";
 
 export async function POST(req: Request) {
   const data = await req.json();
-  const filePath = path.join(process.cwd(), "feedbacks.json");
+  const { name, email, message } = data;
 
-  const existing = fs.existsSync(filePath)
-    ? JSON.parse(fs.readFileSync(filePath, "utf-8"))
-    : [];
-
-  const newEntry = {
-    ...data,
-    timestamp: new Date().toISOString(),
-  };
-
-  existing.push(newEntry);
-  fs.writeFileSync(filePath, JSON.stringify(existing, null, 2));
-
+  // Use parameterized query to prevent SQL injection
+  const query = await sql`
+    INSERT INTO fallon (name, email, feedback) 
+    VALUES (${name}, ${email}, ${message})
+  `;
   return NextResponse.json({ success: true });
 }
