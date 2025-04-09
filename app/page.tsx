@@ -1,18 +1,10 @@
 'use client';
 
 import { useState } from "react";
-import axios from "axios";
 import FeedbackForm from "@/components/Form";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Feedbacks from "@/components/Feedbacks";
-interface Feedback {
-  name: string;
-  email: string;
-  message: string;
-  created_at: string;
-}
-
 export default function Home() {
   const [showFeedbacks, setShowFeedbacks] = useState(false);
 
